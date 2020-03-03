@@ -4,27 +4,29 @@
 #
 Name     : PyDispatcher
 Version  : 2.0.5
-Release  : 6
+Release  : 7
 URL      : https://files.pythonhosted.org/packages/cd/37/39aca520918ce1935bea9c356bcbb7ed7e52ad4e31bff9b943dfc8e7115b/PyDispatcher-2.0.5.tar.gz
 Source0  : https://files.pythonhosted.org/packages/cd/37/39aca520918ce1935bea9c356bcbb7ed7e52ad4e31bff9b943dfc8e7115b/PyDispatcher-2.0.5.tar.gz
 Summary  : Multi-producer-multi-consumer signal dispatching mechanism
 Group    : Development/Tools
 License  : BSD-3-Clause
-Requires: PyDispatcher-python3
-Requires: PyDispatcher-license
-Requires: PyDispatcher-python
+Requires: PyDispatcher-license = %{version}-%{release}
+Requires: PyDispatcher-python = %{version}-%{release}
+Requires: PyDispatcher-python3 = %{version}-%{release}
 BuildRequires : buildreq-distutils3
 
 %description
+Dispatcher mechanism for creating event models
+
 PyDispatcher is an enhanced version of Patrick K. O'Brien's
-        original dispatcher.py module.  It provides the Python
-        programmer with a robust mechanism for event routing within
-        various application contexts.
-        
-        Included in the package are the robustapply and saferef
-        modules, which provide the ability to selectively apply
-        arguments to callable objects and to reference instance
-        methods using weak-references.
+original dispatcher.py module.  It provides the Python
+programmer with a robust mechanism for event routing within
+various application contexts.
+
+Included in the package are the robustapply and saferef
+modules, which provide the ability to selectively apply
+arguments to callable objects and to reference instance
+methods using weak-references.
 
 %package license
 Summary: license components for the PyDispatcher package.
@@ -37,7 +39,7 @@ license components for the PyDispatcher package.
 %package python
 Summary: python components for the PyDispatcher package.
 Group: Default
-Requires: PyDispatcher-python3
+Requires: PyDispatcher-python3 = %{version}-%{release}
 Provides: pydispatcher-python
 
 %description python
@@ -48,6 +50,7 @@ python components for the PyDispatcher package.
 Summary: python3 components for the PyDispatcher package.
 Group: Default
 Requires: python3-core
+Provides: pypi(PyDispatcher)
 
 %description python3
 python3 components for the PyDispatcher package.
@@ -55,20 +58,29 @@ python3 components for the PyDispatcher package.
 
 %prep
 %setup -q -n PyDispatcher-2.0.5
+cd %{_builddir}/PyDispatcher-2.0.5
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1534700439
-python3 setup.py build -b py3
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1583205848
+# -Werror is for werrorists
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$CFLAGS -fno-lto "
+export FFLAGS="$CFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
+export MAKEFLAGS=%{?_smp_mflags}
+python3 setup.py build
 
 %install
+export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/PyDispatcher
-cp license.txt %{buildroot}/usr/share/doc/PyDispatcher/license.txt
-python3 -tt setup.py build -b py3 install --root=%{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/PyDispatcher
+cp %{_builddir}/PyDispatcher-2.0.5/license.txt %{buildroot}/usr/share/package-licenses/PyDispatcher/0053f5f87a9855e99be2109f0afefbd03783eb94
+python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
 echo ----[ mark ]----
@@ -77,8 +89,8 @@ echo ----[ mark ]----
 %defattr(-,root,root,-)
 
 %files license
-%defattr(-,root,root,-)
-/usr/share/doc/PyDispatcher/license.txt
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/PyDispatcher/0053f5f87a9855e99be2109f0afefbd03783eb94
 
 %files python
 %defattr(-,root,root,-)
