@@ -4,7 +4,7 @@
 #
 Name     : PyDispatcher
 Version  : 2.0.5
-Release  : 7
+Release  : 8
 URL      : https://files.pythonhosted.org/packages/cd/37/39aca520918ce1935bea9c356bcbb7ed7e52ad4e31bff9b943dfc8e7115b/PyDispatcher-2.0.5.tar.gz
 Source0  : https://files.pythonhosted.org/packages/cd/37/39aca520918ce1935bea9c356bcbb7ed7e52ad4e31bff9b943dfc8e7115b/PyDispatcher-2.0.5.tar.gz
 Summary  : Multi-producer-multi-consumer signal dispatching mechanism
@@ -16,17 +16,15 @@ Requires: PyDispatcher-python3 = %{version}-%{release}
 BuildRequires : buildreq-distutils3
 
 %description
-Dispatcher mechanism for creating event models
-
 PyDispatcher is an enhanced version of Patrick K. O'Brien's
-original dispatcher.py module.  It provides the Python
-programmer with a robust mechanism for event routing within
-various application contexts.
-
-Included in the package are the robustapply and saferef
-modules, which provide the ability to selectively apply
-arguments to callable objects and to reference instance
-methods using weak-references.
+        original dispatcher.py module.  It provides the Python
+        programmer with a robust mechanism for event routing within
+        various application contexts.
+        
+        Included in the package are the robustapply and saferef
+        modules, which provide the ability to selectively apply
+        arguments to callable objects and to reference instance
+        methods using weak-references.
 
 %package license
 Summary: license components for the PyDispatcher package.
@@ -50,7 +48,7 @@ python components for the PyDispatcher package.
 Summary: python3 components for the PyDispatcher package.
 Group: Default
 Requires: python3-core
-Provides: pypi(PyDispatcher)
+Provides: pypi(pydispatcher)
 
 %description python3
 python3 components for the PyDispatcher package.
@@ -65,8 +63,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1583205848
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1583520323
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$CFLAGS -fno-lto "
